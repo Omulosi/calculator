@@ -36,7 +36,17 @@ BUTTONS.forEach((btn) => {
     let calcBtn = document.createElement('div');
     calcBtn.setAttribute("class", btn.class_);
     calcBtn.setAttribute("id", btn.id || '');
-    calcBtn.innerHTML = `<span>${btn.content}</span>`;
+    if (btn.name === 'display') {
+        let bigDiv = document.createElement('div');
+        bigDiv.setAttribute('id', 'big-display');
+        let smallDiv = document.createElement('div');
+        smallDiv.setAttribute('id', 'small-display');
+        calcBtn.appendChild(bigDiv);
+        calcBtn.appendChild(smallDiv);
+    } else {
+        calcBtn.innerHTML = `<span>${btn.content}</span>`;
+    }
+
     calculator.appendChild(calcBtn);
 });
 
