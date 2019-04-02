@@ -1,0 +1,233 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption,
+tbody, tfoot, thead, tr, th, td, article, aside,
+canvas, details, embed, figure, figcaption, footer,
+header, hgroup, menu, nav, output, ruby, section,
+summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+strong, b {
+  font-weight: bold;
+}
+em, i {
+  font-style: italic;
+}
+a img {
+  border: none;
+}
+/* END RESET*/
+
+/* GLOBAL STYLES */
+
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 70%;
+  margin: 0 auto;
+  height: 100%;
+}
+
+
+.header {
+  text-align: center;
+  color: #1a5f8c;
+  box-shadow: 0 1px 0.5px #1a5f8c;
+  height: 5.5vh;
+  margin-top: 5px;
+}
+
+.calc-wrapper {
+  margin: 2em;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.calculator {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  width: 400px;
+  height: 480px;
+  box-shadow: 0 0 0 5px #1a5f8c;
+  border-radius: 5px;
+  grid-gap: 10px;
+  padding: 1em;
+  background-color: lightblue;
+}
+
+.calculator > div {
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #ddd;
+  padding: 2px;
+  font-size: 2.5em;
+  font-weight: bold;
+  align-content: center;
+  position: relative;
+}
+
+/* Center button contents */
+.calculator > div > span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+/* button positions */
+
+#add, #div, #sub, #times {
+  background-color: #686665;
+}
+
+#back, #plus-minus {
+  background-color: #888;
+}
+
+#equal {
+  background-color: #00f;
+}
+
+#display {
+  background-color: #fff;
+  color: #ccc;
+  box-shadow: 0 0 0 7px #ccc inset;
+  grid-area: 1/1/3/6;
+  border-radius: 5px;
+}
+
+.num {
+  color: #1a5f8c;
+}
+
+.zero {
+  grid-area: 6/2/7/3;
+}
+
+.one {
+  grid-area: 5/1/6/2;
+}
+
+.two {
+  grid-area: 5/2/6/3;
+}
+
+.three {
+  grid-area: 5/3/6/4;
+}
+
+.four {
+  grid-area: 4/1/5/2;
+}
+
+.five {
+  grid-area: 4/2/5/3;
+}
+
+.six {
+  grid-area: 4/3/5/4;
+}
+
+.seven {
+  grid-area: 3/1/4/2;
+}
+
+.eight {
+  grid-area: 3/2/4/3;
+}
+
+.nine {
+  grid-area: 3/3/4/4;
+}
+
+.dot {
+  grid-area: 6/3/7/4;
+}
+
+.cancel {
+  color: #fff;
+  grid-area: 6/1/7/2;
+}
+
+#cancel {
+  background-color: #f00;
+}
+
+.add {
+  color: #fff;
+  grid-area: 6/4/7/5;
+}
+
+.calculator > div.cancel {
+  background-color: #f00;
+}
+
+.sub {
+  color: #fff;
+  grid-area: 5/4/6/5;
+}
+
+.times {
+  color: #fff;
+  grid-area: 4/4/5/5;
+}
+
+.div {
+  color: #fff;
+  grid-area: 4/5/5/6;
+}
+
+.equal {
+  color: #fff;
+  grid-area: 5/5/7/6;
+}
+
+.back {
+  color: #fff;
+  grid-area: 3/5/4/6;
+}
+
+.plus-minus {
+  color: #fff;
+  grid-area: 3/4/4/5;
+}
