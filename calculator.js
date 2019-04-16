@@ -118,6 +118,7 @@ const operateCalculator = () => {
     let btnValue;
     let rawData = "";
     let forwardCarry = [];
+    let result;
 
     let calcBtns = document.querySelectorAll('.calculator > div');
     calcBtns = Array.from(calcBtns);
@@ -129,19 +130,30 @@ const operateCalculator = () => {
             // check for buttons matching the special characters
             // and operators
             if (btn.dataset.rawData.match(/[+\-*/=]/g)) {
+                console.log('000000:',operationsArray);
+                console.log('0000001:', smallDisplayValue);
+                console.log('0000002:', forwardCarry);
                 // store the data to be operated on in an array only
                 // if the data has been input by user.
                 // If not, use the previously computed result
-                if (rawData) { operationsArray.push(rawData);}
+                if (rawData) {
+                    operationsArray.push(rawData);
+                }
                 else { 
                     // continuing from prev calculation
                     // update display value to indicate the prev value
                     // for better user experience
-                    if (forwardCarry.length != 0){
-                        operationsArray.push(forwardCarry.pop());
-                        smallDisplayValue = operationsArray[0];
+                    if (forwardCarry.length !== 0){
+                        let temp = forwardCarry.pop();
+                        if (temp) {
+                            operationsArray.push(temp);
+                            smallDisplayValue = operationsArray[0];
+                        }
                     }
                 }
+
+                console.log('array:', operationsArray);
+                console.log('display:', smallDisplayValue);
                 // Carry out calculations only if the previous data is well formed i.e
                 //  - An operator can only come after a valid number
                 //  - There should be at least one number preceding an operator
@@ -166,7 +178,7 @@ const operateCalculator = () => {
                     // after entering three values - a number, an operator, a number - 
                     // in that order.
                     if (operationsArray.length == 4) {
-                        let num_a, num_b, operator, result;
+                        let num_a, num_b, operator;
                         // get first three entries 
                         num_a = operationsArray.shift();
                         operator = operationsArray.shift();
@@ -206,6 +218,7 @@ const operateCalculator = () => {
                                 populateBigDisplay(result);}
 
                         }
+                    }
 
                         // Handle for the special case when '=' is clicked
                         if (operationsArray.slice(-1).join() == '=') {
@@ -214,7 +227,7 @@ const operateCalculator = () => {
                             // set display to value of calculation
                             smallDisplayValue += operationsArray.join('');
                             populateSmallDisplay(smallDisplayValue);
-                            // operationsArray.pop();
+                            
                             smallDisplayValue = result;
 
                         } else {
@@ -226,8 +239,8 @@ const operateCalculator = () => {
                             
                         }
 
-                    }
                     
+                
                     // display the math expression of the current calculation
                     populateSmallDisplay(smallDisplayValue);
                     
