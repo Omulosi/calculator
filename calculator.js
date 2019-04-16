@@ -108,6 +108,7 @@ const operateCalculator = () => {
     let operationsArray = [];  // holds data values and the corresponding operations
     let btnValue;
     let rawData = "";
+    let forwardCarry = [];
 
     let calcBtns = document.querySelectorAll('.calculator > div');
     calcBtns = Array.from(calcBtns);
@@ -115,94 +116,129 @@ const operateCalculator = () => {
     calcBtns.forEach((btn) => {
         btn.addEventListener('click', function(event){
             
+
             // check for buttons matching the special characters
             // and operators
             if (btn.dataset.rawData.match(/[+\-*/=]/g)) {
-                // store the data to be operated on in an array together
-                // with the operator coming after it
-                operationsArray.push(rawData);
-                operationsArray.push(btn.dataset.rawData);
-
-                // clear raw data storage variable as the data is now
-                // stored in the array
-                rawData = '';
-
-                // keep a running display of the input history
-                // so far - this is shown in the bottom smaller display
-                smallDisplayValue += btn.dataset.content;
-
-                // populateSmallDisplay(smallDisplayValue);
-                
-
-                // operate on the values accumulated so far if at
-                // least three items get stored in the operations array.
-                // This is triggered whenever you click on an operator
-                // after entering three values - a number, an operator, a number - 
-                // in that order.
-                if (operationsArray.length >= 3) {
-                    let num_a, num_b, operator, result;
-                    // get first three entries 
-                    num_a = operationsArray.shift();
-                    operator = operationsArray.shift();
-                    num_b = operationsArray.shift();
-
-                    // operate on numbers using an appropriate operator
-                    if (operator == '+') {
-                        result = operate(add, Number(num_a), Number(num_b));
-                        operationsArray.unshift(result);
-
-                        // display result on the big display
-                        populateBigDisplay(result);
-                        
-                    }
-
-                    if (operator == '-') {
-                        result = operate(subtract, Number(num_a), Number(num_b));
-                        operationsArray.unshift(result);
-                        populateBigDisplay(result);  
-
-                    }
-
-                    if (operator == '*') {
-                        result = operate(multiply, Number(num_a), Number(num_b));
-                        operationsArray.unshift(result);
-                        populateBigDisplay(result);
-
-                    }
-
-                    if (operator == '/') {
-                        result = operate(divide, Number(num_a), Number(num_b));
-                        operationsArray.unshift(result);
-                        populateBigDisplay(result);
-
-                    }
-
-                    // Handle for the special case when '=' is clicked
-                    if (btn.dataset.rawData == '=') {
-                        // remove the '=' sign from operations array
-                        operationsArray.pop();
-                        smallDisplayValue += operationsArray.join('');
-                        populateSmallDisplay(smallDisplayValue);
-                        operationsArray.pop();
-                        smallDisplayValue = result;
-
-                    } else {
-                        // update small display to contain results of operating on entries so
-                        // far, post-pended by the last input operator
-                        smallDisplayValue = operationsArray.join('');
-                        smallDisplayValue = smallDisplayValue.replace('/', btn.dataset.content);
-                        smallDisplayValue = smallDisplayValue.replace('*', btn.dataset.content);
-                        
-                    }
-
+                // store the data to be operated on in an array only
+                // if the data has been input by user.
+                // If not, use the previously computed result
+                if (rawData) { operationsArray.push(rawData);}
+                else { 
+                    // continuing from prev calculation
+                    // update display value to indicate the prev value
+                    // for better user experience
+                    operationsArray.push(forwardCarry.pop());
+                    smallDisplayValue = operationsArray[0];
                 }
 
-                // Make Big display start displaying values afresh after 
-                // clicking an operator
-                bigDisplayValue = '';
-                populateSmallDisplay(smallDisplayValue);
-                // make small display start afresh after clicking '='
-                if (btn.dataset.rawData == '=') { smallDisplayValue = ''; }
+                // Carry out calculations only if the previous data is well formed i.e
+                //  - An operator can only come after a valid number
+                //  - There should be at least one number preceding an operator
+                if (operationsArray.length != 0 && !isNaN(operationsArray.slice(-1).join())){
+                    operationsArray.push(btn.dataset.rawData); 
+               
+                    // clear raw data storage variable as the data is now
+                    // stored in the array
+                    rawData = '';
+
+                    // keep a running display of the input history
+                    // so far - this is shown in the bottom smaller display
+                    smallDisplayValue += btn.dataset.content;
+
+
+                    // populateSmallDisplay(smallDisplayValue);
+                    
+
+                    // operate on the values accumulated so far if at
+                    // least three items get stored in the operations array.
+                    // This is triggered whenever you click on an operator
+                    // after entering three values - a number, an operator, a number - 
+                    // in that order.
+                    if (operationsArray.length == 4) {
+                        let num_a, num_b, operator, result;
+                        // get first three entries 
+                        num_a = operationsArray.shift();
+                        operator = operationsArray.shift();
+                        num_b = operationsArray.shift();
+
+                        // operate on numbers using an appropriate operator
+                        if (operator == '+') {
+                            result = operate(add, Number(num_a), Number(num_b));
+                            operationsArray.unshift(result);
+
+                            // display result on the big display
+                            populateBigDisplay(result);
+                            
+                        }
+
+                        if (operator == '-') {
+                            result = operate(subtract, Number(num_a), Number(num_b));
+                            operationsArray.unshift(result);
+                            populateBigDisplay(result);  
+
+                        }
+
+                        if (operator == '*') {
+                            result = operate(multiply, Number(num_a), Number(num_b));
+                            operationsArray.unshift(result);
+                            populateBigDisplay(result);
+
+                        }
+
+                        if (operator == '/') {
+                            if (Number(num_b) == 0) {
+                                populateBigDisplay('Error!');
+                                result = '';
+                            } else {
+                                result = operate(divide, Number(num_a), Number(num_b));
+                                operationsArray.unshift(result);
+                                populateBigDisplay(result);}
+
+                        }
+
+                        // Handle for the special case when '=' is clicked
+                        if (operationsArray.slice(-1).join() == '=') {
+                            // remove the '=' sign from operations array
+                            operationsArray.pop();
+                            // set display to value of calculation
+                            smallDisplayValue += operationsArray.join('');
+                            populateSmallDisplay(smallDisplayValue);
+                            // operationsArray.pop();
+                            smallDisplayValue = result;
+
+                        } else {
+                            // update small display to contain results of operating on entries so
+                            // far, post-pended by the last input operator
+                            smallDisplayValue = operationsArray.join('');
+                            smallDisplayValue = smallDisplayValue.replace('/', btn.dataset.content);
+                            smallDisplayValue = smallDisplayValue.replace('*', btn.dataset.content);
+                            
+                        }
+
+                    }
+                    
+                    // display the math expression of the current calculation
+                    populateSmallDisplay(smallDisplayValue);
+                    
+                    // make small display start afresh after clicking '='
+                    if (btn.dataset.rawData == '=') { smallDisplayValue = ''; }
+
+                    // if the only value in the array is a number, a calculation has been
+                    // done. Carry forward this value to be used for further calculations
+                    // unless the user clears everything and starts afresh, a case which is
+                    // handled in the next else clause.
+
+                    if (operationsArray.length == 1 && !isNaN(operationsArray[0])){
+                        // smallDisplayValue = operationsArray[0];
+                        forwardCarry.push(operationsArray.pop());
+                    }
+
+                    // Make Big display start displaying values afresh after 
+                    // clicking an operator
+                    bigDisplayValue = '';
+
+            }
 
             } else if (btn.dataset.rawData == 'C') {
                 // clear everything and start afresh
@@ -213,11 +249,20 @@ const operateCalculator = () => {
                 populateSmallDisplay(smallDisplayValue);
                 populateBigDisplay(bigDisplayValue);
 
+            } else if (btn.dataset.rawData === '<'){
+                rawData = rawData.slice(0, -1);
+                smallDisplayValue = operationsArray.join('') + rawData;
+                smallDisplayValue = smallDisplayValue.replace('*', '&#215;');
+                smallDisplayValue = smallDisplayValue.replace('/', '&#247;');
+                bigDisplayValue = rawData;
+                populateBigDisplay(bigDisplayValue);
+                populateSmallDisplay(smallDisplayValue);
+                
             }
 
-             else {
+            else {
                 btnValue = btn.dataset.content;
-
+               
                 if (btnValue == '0') { btnValue = '' };
                 if (smallDisplayValue == '0') {smallDisplayValue = ''};
                 if (bigDisplayValue == '0') { bigDisplayValue = ''};
@@ -230,8 +275,6 @@ const operateCalculator = () => {
                 rawData += btn.dataset.rawData;
             }
             
-        
-
         });
     });
 }
