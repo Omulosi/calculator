@@ -57,19 +57,45 @@ h1 {
   font-weight: bold;
 }
 
+body {
+  color: #4b4e55;
+}
+
+a {
+  color: #428bca;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+/* Header styles */
+
+header {
+    background: rgba(190,195,195,.65);
+}
+
+.header-desktop {
+    display: flex;
+    align-items: center;
+    padding: 1em 2em;
+    height: 75px;
+    width: 100%;
+}
+
+.header-desktop .logo-v2 {
+    flex: 0 0 500px;
+    text-align: left;
+}
+
+.logo-v2 h1 {
+  font-style: italic;
+}
+
+
 .container {
   max-width: 70%;
   margin: 0 auto;
   height: 100%;
-}
-
-
-.header {
-  text-align: center;
-  color: #1a5f8c;
-  box-shadow: 0 1px 0.5px #1a5f8c;
-  height: 5.5vh;
-  margin-top: 5px;
 }
 
 .calc-wrapper {
@@ -107,7 +133,6 @@ h1 {
 
 .calculator > div > span:hover {
   color: #f44;
-  transition: 0.5s ease-in-out;
 }
 
 /* Center button contents */
@@ -260,3 +285,11 @@ h1 {
   color: #fff;
   grid-area: 3/4/4/5;
 }
+
+
+
+
+
+
+
+
