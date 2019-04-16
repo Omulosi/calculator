@@ -153,17 +153,13 @@ const operateCalculator = () => {
 
                         // display result on the big display
                         populateBigDisplay(result);
-
-                        smallDisplayValue = operationsArray.join('');
                         
                     }
 
                     if (operator == '-') {
                         result = operate(subtract, Number(num_a), Number(num_b));
                         operationsArray.unshift(result);
-                        populateBigDisplay(result); 
-
-                        smallDisplayValue = operationsArray.join(''); 
+                        populateBigDisplay(result);  
 
                     }
 
@@ -172,19 +168,12 @@ const operateCalculator = () => {
                         operationsArray.unshift(result);
                         populateBigDisplay(result);
 
-                        smallDisplayValue = operationsArray.join('');
-                        smallDisplayValue = smallDisplayValue.replace('*', btn.dataset.content);
-
                     }
 
                     if (operator == '/') {
                         result = operate(divide, Number(num_a), Number(num_b));
                         operationsArray.unshift(result);
                         populateBigDisplay(result);
-
-
-                        smallDisplayValue = operationsArray.join('');
-                        smallDisplayValue = smallDisplayValue.replace('/', btn.dataset.content);
 
                     }
 
@@ -197,7 +186,14 @@ const operateCalculator = () => {
                         operationsArray.pop();
                         smallDisplayValue = result;
 
-                    } 
+                    } else {
+                        // update small display to contain results of operating on entries so
+                        // far, post-pended by the last input operator
+                        smallDisplayValue = operationsArray.join('');
+                        smallDisplayValue = smallDisplayValue.replace('/', btn.dataset.content);
+                        smallDisplayValue = smallDisplayValue.replace('*', btn.dataset.content);
+                        
+                    }
 
                 }
 
@@ -209,6 +205,7 @@ const operateCalculator = () => {
                 if (btn.dataset.rawData == '=') { smallDisplayValue = ''; }
 
             } else if (btn.dataset.rawData == 'C') {
+                // clear everything and start afresh
                 bigDisplayValue = '0';
                 smallDisplayValue = '0';
                 rawData = '';
