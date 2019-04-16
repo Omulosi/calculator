@@ -130,9 +130,6 @@ const operateCalculator = () => {
             // check for buttons matching the special characters
             // and operators
             if (btn.dataset.rawData.match(/[+\-*/=]/g)) {
-                console.log('000000:',operationsArray);
-                console.log('0000001:', smallDisplayValue);
-                console.log('0000002:', forwardCarry);
                 // store the data to be operated on in an array only
                 // if the data has been input by user.
                 // If not, use the previously computed result
@@ -151,9 +148,6 @@ const operateCalculator = () => {
                         }
                     }
                 }
-
-                console.log('array:', operationsArray);
-                console.log('display:', smallDisplayValue);
                 // Carry out calculations only if the previous data is well formed i.e
                 //  - An operator can only come after a valid number
                 //  - There should be at least one number preceding an operator
@@ -220,24 +214,24 @@ const operateCalculator = () => {
                         }
                     }
 
-                        // Handle for the special case when '=' is clicked
-                        if (operationsArray.slice(-1).join() == '=') {
-                            // remove the '=' sign from operations array
-                            operationsArray.pop();
-                            // set display to value of calculation
-                            smallDisplayValue += operationsArray.join('');
-                            populateSmallDisplay(smallDisplayValue);
-                            
-                            smallDisplayValue = result;
+                    // Handle for the special case when '=' is clicked
+                    if (operationsArray.slice(-1).join() == '=') {
+                        // remove the '=' sign from operations array
+                        operationsArray.pop();
+                        // set display to value of calculation
+                        smallDisplayValue += operationsArray.join('');
+                        populateSmallDisplay(smallDisplayValue);
+                        
+                        smallDisplayValue = result;
 
-                        } else {
-                            // update small display to contain results of operating on entries so
-                            // far, post-pended by the last input operator
-                            smallDisplayValue = operationsArray.join('');
-                            smallDisplayValue = smallDisplayValue.replace('/', btn.dataset.content);
-                            smallDisplayValue = smallDisplayValue.replace('*', btn.dataset.content);
-                            
-                        }
+                    } else {
+                        // update small display to contain results of operating on entries so
+                        // far, post-pended by the last input operator
+                        smallDisplayValue = operationsArray.join('');
+                        smallDisplayValue = smallDisplayValue.replace('/', btn.dataset.content);
+                        smallDisplayValue = smallDisplayValue.replace('*', btn.dataset.content);
+                        
+                    }
 
                     
                 
