@@ -176,7 +176,11 @@ header {
   font-size: 1.4em;
   text-align: right;
   padding: 4px;
-  overflow: hidden;
+  overflow: visible;
+}
+
+.err-disp {
+  font-size: 0.8em;
 }
 
 #small-display {

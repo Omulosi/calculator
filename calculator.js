@@ -26,7 +26,7 @@ let BUTTONS = [
     {name: 'div', content: '&#247;', class_: 'div op', id: "div", data: '/'},
     {name: 'equal', content: '&#61', class_: 'equal op', id: "equal", data: '='},
     {name: 'back', content: '&#8594', class_: 'back', id: "back", data: '<'},
-    {name: 'plus-minus', content: '&#177', class_: 'plus-minus num', id: "plus-minus", data: '+-'}
+    {name: 'plus-minus', content: '&#177', class_: 'plus-minus num', id: "plus-minus", data: '-'}
 ]
 
 // Build the structure and layout of the calculator
@@ -91,11 +91,20 @@ const operate = (operator, num_a, num_b) => {
 
 const populateBigDisplay = (value) => {
     let bigDisplay = document.querySelector('#big-display');
+    if (!isNaN(value)){
+        value = Math.round(value * 1000000) / 1000000;
+        if (value > 999999999999) value = '<p class="err-disp">Too big to display</p>';
+
+    }
     bigDisplay.innerHTML = value;
 }
 
 const populateSmallDisplay = (value) => {
     let smallDisplay = document.querySelector('#small-display');
+    if (!isNaN(value)){
+        value = Math.round(value * 1000000) / 1000000;
+        if (value > 999999999999) value = 'Too big to display'
+    }
     smallDisplay.innerHTML = value;
 }
 
@@ -128,10 +137,11 @@ const operateCalculator = () => {
                     // continuing from prev calculation
                     // update display value to indicate the prev value
                     // for better user experience
-                    operationsArray.push(forwardCarry.pop());
-                    smallDisplayValue = operationsArray[0];
+                    if (forwardCarry.length != 0){
+                        operationsArray.push(forwardCarry.pop());
+                        smallDisplayValue = operationsArray[0];
+                    }
                 }
-
                 // Carry out calculations only if the previous data is well formed i.e
                 //  - An operator can only come after a valid number
                 //  - There should be at least one number preceding an operator
